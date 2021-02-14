@@ -1,8 +1,6 @@
-import { type } from "os";
-
 type UserT = {
     _id?: string
-    createdAt: number
+    createdAt?: number
     email: string
     password?: string
     passwordConfirm?: string

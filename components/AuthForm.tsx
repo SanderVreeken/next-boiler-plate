@@ -1,22 +1,25 @@
-// import { capitalizeFirstLetter } from '../functions/helpers'
+import { useState } from 'react'
 
 import { createUser, readUser } from '../graphql/fetchers/users'
 import { CREATE_USER_QUERY, READ_USER_QUERY } from '../graphql/queries/users'
 
+import InputT from '../types/Input'
 import UserT from '../types/User'
+
+import { updateState } from '../functions/state'
 
 import Button from '../components/Button'
 import styles from '../styles/AuthForm.module.css'
-import { useState } from 'react'
+import StyleConstants from '../constants/styles'
 
 type Props = {
-    inputs: string[]
+    inputs: InputT[]
     type: 'login' | 'register'
 }
 
 export default function AuthForm({ inputs, type }: Props) {
     // TODO: See whether the type of the state below could be narrowed by removing the any.
-    const [user, setUser] = useState<UserT | any>({
+    const [user, setUser] = useState<any | UserT>({
         email: '',
         password: '',
         ['password-confirm']: ''
@@ -24,7 +27,6 @@ export default function AuthForm({ inputs, type }: Props) {
 
     const authenticateUser = async (event: MouseEvent) => {
         event.preventDefault()
-        console.log(user)
         if (type === 'login') {
             const data = await readUser(READ_USER_QUERY, user.email)
             console.log(data)
@@ -34,20 +36,13 @@ export default function AuthForm({ inputs, type }: Props) {
         }
     }
 
-    const editState = (key: string, value: string) => {
-        setUser({
-            ...user,
-            [key]: value
-        })
-    }
-
     return (
         <form className={styles.authForm}>
             <h3 role='title'>{type}</h3>
             {inputs.map(input => (
-                <input name={input} onChange={event => editState(input, event.target.value)} placeholder={input} value={user[input]}></input>
+                <input name={input.name} onChange={event => updateState(user, setUser, input.name, event.target.value)} placeholder={input.name} type={input.type} value={user[input.name]}></input>
             ))}
-            <Button backgroundColor='#2da562' color='white' onClick={authenticateUser}>
+            <Button backgroundColor={StyleConstants['--main-highlight-color']} color={StyleConstants['--second-font-color']} onClick={authenticateUser}>
                 <h3>{type}</h3>
             </Button>
         </form>

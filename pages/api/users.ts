@@ -1,9 +1,9 @@
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
-
 import { ApolloServer, gql } from 'apollo-server-micro'
-import { ObjectID } from 'mongodb'
 
+import TokenTD from '../../graphql/typeDefs/Token'
+import UserTD from '../../graphql/typeDefs/User'
 import UserT from '../../types/User'
 
 import { connectToDatabase } from '../../utils/mongodb'
@@ -30,13 +30,8 @@ const typeDefs = gql`
     type Query {
         readUser(email: String!): User!
     }
-    type Token {
-        token: String!
-    }
-    type User {
-        _id: String!
-        email: String!
-    }
+    ${TokenTD}
+    ${UserTD}
 `
 
 const resolvers = {
@@ -48,8 +43,7 @@ const resolvers = {
                 const user: UserT = {
                     createdAt: new Date().valueOf(),
                     email,
-                    password,
-                    passwordConfirm
+                    password: await bcrypt.hash(password, 12)
                 }
 
                 await db.collection('users').insertOne(user)
