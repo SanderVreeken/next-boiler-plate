@@ -1,0 +1,18 @@
+.authForm {
+  border: 1px solid var(--main-border-color);
+  border-radius: var(--main-border-radius);
+  padding: 1.4rem;
+  width: 382px;
+}
+
+.authForm button > h3 {
+  font-weight: 300;
+}
+
+.authForm h3[role="title"] {
+  margin-bottom: 0.8rem;
+}
+
+.authForm input {
+  margin-bottom: 0.4rem;
+}

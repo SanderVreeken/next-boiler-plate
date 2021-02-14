@@ -1,0 +1,9 @@
+.authPage {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.authPage form {
+  margin-top: 2rem;
+}
