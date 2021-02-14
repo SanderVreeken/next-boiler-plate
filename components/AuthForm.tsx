@@ -3,14 +3,13 @@ import { useState } from 'react'
 import { createUser, readUser } from '../graphql/fetchers/users'
 import { CREATE_USER_QUERY, READ_USER_QUERY } from '../graphql/queries/users'
 
+import StyleConstants from '../constants/styles'
 import InputT from '../types/Input'
-import UserT from '../types/User'
 
 import { updateState } from '../functions/state'
 
 import Button from '../components/Button'
 import styles from '../styles/AuthForm.module.css'
-import StyleConstants from '../constants/styles'
 
 type Props = {
     inputs: InputT[]
@@ -19,7 +18,7 @@ type Props = {
 
 export default function AuthForm({ inputs, type }: Props) {
     // TODO: See whether the type of the state below could be narrowed by removing the any.
-    const [user, setUser] = useState<any | UserT>({
+    const [user, setUser] = useState<any>({
         email: '',
         password: '',
         ['password-confirm']: ''
